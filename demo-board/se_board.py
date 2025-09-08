@@ -1,5 +1,4 @@
 import argparse
-import os
 from pathlib import Path
 
 from cores.m4_core import CortexM4Processor
