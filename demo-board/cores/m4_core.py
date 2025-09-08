@@ -16,14 +16,16 @@ def FPMaker(
     _opClasses: list[str], 
     _opLat: int, 
     _timingDescription:str, 
-    _srcRegsRelativeLats: 0
+    _srcRegsRelativeLats: int, 
+    _extraAssumedLat: int
 )-> MinorFU:
     class CustomFU(MinorFU):
         opClasses = minorMakeOpClassSet(_opClasses)
         opLat = _opLat
         timings = [MinorFUTiming(
             description=_timingDescription, 
-            srcRegsRelativeLats=_srcRegsRelativeLats
+            srcRegsRelativeLats=_srcRegsRelativeLats,
+            extraAssumedLat=_extraAssumedLat
             )
         ]
     return CustomFU()
@@ -39,28 +41,28 @@ def CortexM4FPUPool() -> list[MinorFU]:
     # Combine with the Arm ISA in gem5/src/arch/arm/isa/insts/fp.isa, Cortex M4
     # supports the following floating point operations:
     # vabs.f32, vmov, vmrs, vneg
-    floatAbs = FPMaker(["SimdFloatMisc"], 1, "SimdFloatMisc", 2)
+    floatAbs = FPMaker(["SimdFloatMisc"], 1, "SimdFloatMisc", 2, 0)
     # vadd.f32, vsub
-    floatAdd = FPMaker(["SimdFloatAdd"], 1, "SimdFloatAdd", 2)
+    floatAdd = FPMaker(["SimdFloatAdd"], 1, "SimdFloatAdd", 2, 0)
     # vcmp.f32 and vcmpe.f32
-    floatCmp = FPMaker(["SimdFloatCmp"], 1, "SimdFloatCmp", 2)
+    floatCmp = FPMaker(["SimdFloatCmp"], 1, "SimdFloatCmp", 2, 0)
     # vcvt.f32
-    floatCvt = FPMaker(["SimdFloatCvt"], 1, "SimdFloatCvt", 2)
+    floatCvt = FPMaker(["SimdFloatCvt"], 1, "SimdFloatCvt", 2, 0)
     # vdiv.f32
-    floatDiv = FPMaker(["SimdFloatDiv"], 14, "SimdFloatDiv", 2)
+    floatDiv = FPMaker(["SimdFloatDiv"], 14, "SimdFloatDiv", 2, 0)
     # vmul
-    floatMul = FPMaker(["SimdFloatMult"], 1, "SimdFloatMult", 2)
+    floatMul = FPMaker(["SimdFloatMult"], 1, "SimdFloatMult", 2, 0)
     # vmla, vmls, vnmla, vnmls, vfma, vfms, vfnma, vfnms
-    floatMla = FPMaker(["SimdFloatMultAcc"], 3, "SimdFloatMultAcc", 2)
+    floatMla = FPMaker(["SimdFloatMultAcc"], 3, "SimdFloatMultAcc", 2, 0)
     # vsqrt
-    floatSqrt = FPMaker(["SimdFloatSqrt"], 14, "SimdFloatSqrt", 2)
+    floatSqrt = FPMaker(["SimdFloatSqrt"], 14, "SimdFloatSqrt", 2, 0)
     # vldr.32
     floatMemRead = FPMaker(
-        ["FloatMemRead"], 2, "FloatMemRead", 2
+        ["FloatMemRead"], 2, "FloatMemRead", 2, 0
     )
     # vstr.32
     floatMemWrite = FPMaker(
-        ["FloatMemWrite"], 2, "FloatMemWrite", 2
+        ["FloatMemWrite"], 2, "FloatMemWrite", 2, 0 
     )
 
     # TODO: need to dig more precisely with vldm, vpop, vpush, vstm
@@ -82,7 +84,22 @@ def CortexM4IntFU() -> list[MinorFU]:
     # Integer instruction units
     # Number of cycle is found in Cortex-M4 Technical Reference Manual
     # Table 3-1  Cortex-M4 instruction set. 
-    return []
+    intSimple = FPMaker(["IntAlu"], 1, "IntAlu", 1, 0)
+    intMul = FPMaker(["IntMult"], 2, "IntMult", 1, 0)
+    # TODO: confused on divide instruction so use the original MinorFU setting 
+    # first
+    intDiv = FPMaker(["IntDiv"], 9, "IntDiv", 0, 0)
+    # orn
+    simdAlu = FPMaker(["SimdAlu"], 1, "SimdAlu", 2, 0)
+    simdMultAcc = FPMaker(["SimdMultAcc"], 1, "SimdMultAcc", 2, 0)
+
+    return [
+        intSimple,
+        intMul,
+        intDiv,
+        simdAlu,
+        simdMultAcc
+    ]
 
 
 class CortexM4Core(ArmMinorCPU):
