@@ -5,11 +5,23 @@ from pathlib import Path
 from cores.m4_core import CortexM4Processor
 
 import m5
-from m5.objects import *
+from m5.objects import (
+    AddrRange,
+    BadAddr,
+    CfiMemory,
+    Process,
+    Root,
+    SEWorkload,
+    SimpleMemory,
+    SrcClockDomain,
+    System,
+    SystemXBar,
+    VoltageDomain
+)
 
 parser = argparse.ArgumentParser(
-    description="Run a gem5 simulation with the "
-    "demo stm32g4 MCU board in SE mode."
+    description="Run a gem5 simulation with the demo stm32g4 MCU board in SE"
+        " mode."
 )
 parser.add_argument(
     "--binary", type=str, required=True, help="Path to the binary to run"
@@ -18,7 +30,8 @@ args = parser.parse_args()
 
 binary_path = Path(args.binary)
 if not binary_path.is_file():
-    raise FileNotFoundError(f"Binary file '{binary_path}' does not exist.")
+    raise FileNotFoundError(f"Binary file '{binary_path.as_posix()}' does not "
+                            "exist.")
 
 system = System()
 
@@ -35,11 +48,11 @@ system.processor = processor
 
 # ==== setup memory ranges ====
 # flash memory 512 KBytes
-flash_memory = AddrRange("512kB")
+flash_memory = AddrRange("512KiB")
 # sram 1 has 80 KBytes
-sram1 = AddrRange(start=0x20000000, size="80kB")
+sram1 = AddrRange(start=0x20000000, size="80KiB")
 # sram 2 has 16 KBytes
-sram2 = AddrRange(start=0x20014000, size="16kB")
+sram2 = AddrRange(start=0x20014000, size="16KiB")
 # record memory ranges in system
 system.mem_ranges = [flash_memory, sram1, sram2]
 # ==== end of memory ranges setup ====
