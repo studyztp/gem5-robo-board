@@ -1,0 +1,6 @@
+[submodule "gem5"]
+	path = gem5
+	url = git@github.com:studyztp/gem5.git
+[submodule "ento-bench"]
+	path = ento-bench
+	url = git@github.com:cornell-brg/ento-bench.git
