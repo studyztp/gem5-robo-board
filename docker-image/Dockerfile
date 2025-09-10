@@ -4,6 +4,35 @@ FROM ubuntu:24.04
 ARG DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
+# gem5 deps
+RUN apt -y update && apt -y upgrade && apt -y install \
+    build-essential \
+    scons \
+    python3-dev \
+    git \
+    pre-commit \
+    zlib1g \
+    zlib1g-dev \
+    libprotobuf-dev \
+    protobuf-compiler \
+    libprotoc-dev \
+    libgoogle-perftools-dev \
+    libboost-all-dev \
+    libhdf5-serial-dev \
+    python3-pydot \
+    python3-venv \
+    python3-tk \
+    mypy \
+    m4 \
+    libcapstone-dev \
+    libpng-dev \
+    libelf-dev \
+    pkg-config \
+    wget \
+    cmake \
+    doxygen
+# gem5 deps end
+
 # Core build deps + Python + helpers
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential cmake ninja-build git curl wget ca-certificates xz-utils unzip \
