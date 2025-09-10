@@ -70,7 +70,7 @@ RUN mkdir -p /work
 WORKDIR /work
 
 # Minimal entrypoint to create a user matching host UID/GID
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
