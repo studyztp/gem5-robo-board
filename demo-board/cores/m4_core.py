@@ -101,6 +101,179 @@ def CortexM4IntFU() -> list[MinorFU]:
         simdMultAcc
     ]
 
+def Unsure() -> list[MinorFU]:
+    FloatAdd = FPMaker(["FloatAdd"], 1, "FloatAdd", 2, 0)
+    FloatCmp = FPMaker(["FloatCmp"], 1, "FloatCmp", 2, 0)
+    FloatCvt = FPMaker(["FloatCvt"], 1, "FloatCvt", 2, 0)
+    FloatMult = FPMaker(["FloatMult"], 1, "FloatMult", 2, 0)
+    FloatMultAcc = FPMaker(["FloatMultAcc"], 3, "FloatMultAcc", 2, 0)
+    FloatDiv = FPMaker(["FloatDiv"], 14, "FloatDiv", 2, 0)
+    FloatMisc = FPMaker(["FloatMisc"], 1, "FloatMisc", 2, 0)
+    FloatSqrt = FPMaker(["FloatSqrt"], 14, "FloatSqrt", 2, 0)
+    SimdAdd = FPMaker(["SimdAdd"], 1, "SimdAdd", 2, 0)
+    SimdAddAcc = FPMaker(["SimdAddAcc"], 1, "SimdAddAcc", 2, 0)
+    SimdCmp = FPMaker(["SimdCmp"], 1, "SimdCmp", 2, 0)
+    SimdCvt = FPMaker(["SimdCvt"], 1, "SimdCvt", 2, 0)
+    SimdMisc = FPMaker(["SimdMisc"], 1, "SimdMisc", 2, 0)
+    SimdMult = FPMaker(["SimdMult"], 1, "SimdMult", 2, 0)
+    SimdMatMultAcc = FPMaker(["SimdMatMultAcc"], 1, "SimdMatMultAcc", 2, 0)
+    SimdShift = FPMaker(["SimdShift"], 1, "SimdShift", 2, 0)            
+    SimdShiftAcc = FPMaker(["SimdShiftAcc"], 1, "SimdShiftAcc", 2, 0)
+    SimdDiv = FPMaker(["SimdDiv"], 14, "SimdDiv", 2, 0)
+    SimdSqrt = FPMaker(["SimdSqrt"], 14, "SimdSqrt", 2, 0)
+    SimdFloatAlu = FPMaker(["SimdFloatAlu"], 1, "SimdFloatAlu", 2, 0)
+    SimdFloatMatMultAcc = FPMaker(["SimdFloatMatMultAcc"], 1, "SimdFloatMatMultAcc", 2, 0)
+    SimdReduceAdd = FPMaker(["SimdReduceAdd"], 1, "SimdReduceAdd", 2, 0)
+    SimdReduceAlu = FPMaker(["SimdReduceAlu"], 1, "SimdReduceAlu", 2, 0)
+    SimdReduceCmp = FPMaker(["SimdReduceCmp"], 1, "SimdReduceCmp", 2, 0)
+    SimdFloatReduceAdd = FPMaker(["SimdFloatReduceAdd"], 1, "SimdFloatReduceAdd", 2, 0)
+    SimdFloatReduceCmp = FPMaker(["SimdFloatReduceCmp"], 1, "SimdFloatReduceCmp", 2, 0)
+    SimdAes = FPMaker(["SimdAes"], 1, "SimdAes", 2, 0)
+    SimdAesMix = FPMaker(["SimdAesMix"], 1, "SimdAesMix", 2, 0)
+    SimdSha1Hash = FPMaker(["SimdSha1Hash"], 1, "SimdSha1Hash", 2, 0)
+    SimdSha1Hash2 = FPMaker(["SimdSha1Hash2"], 1, "SimdSha1Hash2", 2, 0)
+    SimdSha256Hash = FPMaker(["SimdSha256Hash"], 1, "SimdSha256Hash", 2, 0)
+    SimdSha256Hash2 = FPMaker(["SimdSha256Hash2"], 1, "SimdSha256Hash2", 2, 0)
+    SimdShaSigma2 = FPMaker(["SimdShaSigma2"], 1, "SimdShaSigma2", 2, 0) 
+    SimdShaSigma3 = FPMaker(["SimdShaSigma3"], 1, "SimdShaSigma3", 2, 0)
+    SimdPredAlu = FPMaker(["SimdPredAlu"], 1, "SimdPredAlu", 2, 0)
+    Matrix = FPMaker(["Matrix"], 1, "Matrix", 2, 0)
+    MatrixMov = FPMaker(["MatrixMov"], 1, "MatrixMov", 2, 0)
+    MatrixOP = FPMaker(["MatrixOP"], 1, "MatrixOP", 2, 0)
+    MemRead = FPMaker(["MemRead"], 1, "MemRead", 2, 0)
+    MemWrite = FPMaker(["MemWrite"], 1, "MemWrite", 2, 0)
+    IprAccess = FPMaker(["IprAccess"], 1, "IprAccess", 2, 0)
+    InstPrefetch = FPMaker(["InstPrefetch"], 1, "InstPrefetch", 2, 0)
+    SimdUnitStrideLoad = FPMaker(
+        ["SimdUnitStrideLoad"], 1, "SimdUnitStrideLoad", 2, 0
+    )
+    SimdUnitStrideStore = FPMaker(
+        ["SimdUnitStrideStore"], 1, "SimdUnitStrideStore", 2, 0
+    )
+    SimdUnitStrideMaskLoad = FPMaker(
+        ["SimdUnitStrideMaskLoad"], 1, "SimdUnitStrideMaskLoad", 2, 0
+    )
+    SimdUnitStrideMaskStore = FPMaker(
+        ["SimdUnitStrideMaskStore"], 1, "SimdUnitStrideMaskStore", 2, 0
+    )
+    SimdStridedLoad = FPMaker(
+        ["SimdStridedLoad"], 1, "SimdStridedLoad", 2, 0
+    )
+    SimdStridedStore = FPMaker(
+        ["SimdStridedStore"], 1, "SimdStridedStore", 2, 0
+    )
+    SimdIndexedLoad = FPMaker(
+        ["SimdIndexedLoad"], 1, "SimdIndexedLoad", 2, 0
+    )
+    SimdIndexedStore = FPMaker(
+        ["SimdIndexedStore"], 1, "SimdIndexedStore", 2, 0
+    )
+    SimdWholeRegisterLoad = FPMaker(
+        ["SimdWholeRegisterLoad"], 1, "SimdWholeRegisterLoad", 2, 0
+    )
+    SimdWholeRegisterStore = FPMaker(
+        ["SimdWholeRegisterStore"], 1, "SimdWholeRegisterStore", 2, 0
+    )
+    SimdUnitStrideFaultOnlyFirstLoad = FPMaker(
+        ["SimdUnitStrideFaultOnlyFirstLoad"], 1, 
+        "SimdUnitStrideFaultOnlyFirstLoad", 2, 0
+    )
+    SimdUnitStrideSegmentedLoad = FPMaker(
+        ["SimdUnitStrideSegmentedLoad"], 1, "SimdUnitStrideSegmentedLoad", 2, 0
+    )
+    SimdUnitStrideSegmentedStore = FPMaker(
+        ["SimdUnitStrideSegmentedStore"], 1, "SimdUnitStrideSegmentedStore", 2,
+        0
+    )
+    SimdUnitStrideSegmentedFaultOnlyFirstLoad = FPMaker(
+        ["SimdUnitStrideSegmentedFaultOnlyFirstLoad"], 1,
+        "SimdUnitStrideSegmentedFaultOnlyFirstLoad", 2, 0
+    )
+    SimdStrideSegmentedLoad = FPMaker(
+        ["SimdStrideSegmentedLoad"], 1, "SimdStrideSegmentedLoad", 2, 0
+    )
+    SimdStrideSegmentedStore = FPMaker(
+        ["SimdStrideSegmentedStore"], 1, "SimdStrideSegmentedStore", 2, 0
+    )
+    SimdExt = FPMaker(["SimdExt"], 1, "SimdExt", 2, 0)
+    SimdFloatExt = FPMaker(["SimdFloatExt"], 1, "SimdFloatExt", 2, 0)
+    SimdConfig = FPMaker(["SimdConfig"], 1, "SimdConfig", 2, 0)
+    SimdBf16Cvt = FPMaker(["SimdBf16Cvt"], 1, "SimdBf16Cvt", 2, 0) 
+    SimdBf16DotProd = FPMaker(["SimdBf16DotProd"], 1, "SimdBf16DotProd", 2, 0)
+    SimdBf16MatMultAcc = FPMaker(
+        ["SimdBf16MatMultAcc"], 1, "SimdBf16MatMultAcc", 2, 0)
+    SimdBf16MultAcc = FPMaker(
+        ["SimdBf16MultAcc"], 1, "SimdBf16MultAcc", 2, 0)
+    Bf16Cvt = FPMaker(
+        ["Bf16Cvt"], 1, "Bf16Cvt", 2, 0)
+    return [
+        FloatAdd,
+        FloatCmp,
+        FloatCvt,
+        FloatMult,
+        FloatMultAcc,
+        FloatDiv,
+        FloatMisc,
+        FloatSqrt,
+        SimdAdd,
+        SimdAddAcc,
+        SimdCmp,
+        SimdCvt,
+        SimdMisc,
+        SimdMult,
+        SimdMatMultAcc,
+        SimdShift,
+        SimdShiftAcc,
+        SimdDiv,
+        SimdSqrt,
+        SimdFloatAlu,
+        SimdFloatMatMultAcc,
+        SimdReduceAdd,
+        SimdReduceAlu,
+        SimdReduceCmp,
+        SimdFloatReduceAdd,
+        SimdFloatReduceCmp,
+        SimdAes,
+        SimdAesMix,
+        SimdSha1Hash,
+        SimdSha1Hash2,
+        SimdSha256Hash,
+        SimdSha256Hash2,
+        SimdShaSigma2,
+        SimdShaSigma3,
+        SimdPredAlu,
+        Matrix,
+        MatrixMov,
+        MatrixOP,
+        MemRead,
+        MemWrite,
+        IprAccess,
+        InstPrefetch,
+        SimdUnitStrideLoad,
+        SimdUnitStrideStore,
+        SimdUnitStrideMaskLoad,
+        SimdUnitStrideMaskStore,
+        SimdStridedLoad,
+        SimdStridedStore,
+        SimdIndexedLoad,
+        SimdIndexedStore,
+        SimdWholeRegisterLoad,
+        SimdWholeRegisterStore,
+        SimdUnitStrideFaultOnlyFirstLoad,
+        SimdUnitStrideSegmentedLoad,
+        SimdUnitStrideSegmentedStore,
+        SimdUnitStrideSegmentedFaultOnlyFirstLoad,
+        SimdStrideSegmentedLoad,
+        SimdStrideSegmentedStore,
+        SimdExt,
+        SimdFloatExt,
+        SimdConfig,
+        SimdBf16Cvt,
+        SimdBf16DotProd,
+        SimdBf16MatMultAcc,
+        SimdBf16MultAcc,
+        Bf16Cvt
+    ]
 
 class CortexM4Core(ArmMinorCPU):
     def __init__(self, if_fpu: bool) -> None:
@@ -128,6 +301,7 @@ class CortexM4Core(ArmMinorCPU):
         if self._if_fpu:
             _all_fus += CortexM4FPUPool()
         _all_fus += CortexM4IntFU()
+        _all_fus += Unsure()
         class CortexM4FUPool(MinorFUPool):
             funcUnits = _all_fus
         return CortexM4FUPool()
