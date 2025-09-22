@@ -13,7 +13,8 @@
 commands to ssh and setup the server:
 ```
 ssh [NetID]@brg-rhel8.ece.cornell.edu
-source setup-brg.sh 
+source setup-brg.sh
+mkdir tutorial && cd tutorial
 ```
 commands for the tutorial experiment
 ```
