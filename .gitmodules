@@ -1,7 +1,7 @@
 [submodule "gem5"]
 	path = gem5
-	url = git@github.com:studyztp/gem5.git
+	url = https://github.com/gem5/gem5.git
 [submodule "ento-bench"]
 	path = ento-bench
-    url = git@github.com:studyztp/ento-bench.git
+    url = https://github.com/studyztp/ento-bench.git
     branch = fix-some-gem5-cmake
