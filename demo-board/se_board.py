@@ -9,6 +9,7 @@ from m5.objects import (
     BadAddr,
     CfiMemory,
     Process,
+    # RedirectPath,
     Root,
     SEWorkload,
     SimpleMemory,
@@ -17,6 +18,9 @@ from m5.objects import (
     SystemXBar,
     VoltageDomain
 )
+from gem5.components.processors.simple_processor import SimpleProcessor
+from gem5.isas import ISA
+from gem5.components.processors.cpu_types import CPUTypes
 
 parser = argparse.ArgumentParser(
     description="Run a gem5 simulation with the demo stm32g4 MCU board in SE"
@@ -24,6 +28,10 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument(
     "--binary", type=str, required=True, help="Path to the binary to run"
+)
+parser.add_argument(
+    "--processor", type=str, default="cortex-m4",
+    choices=["cortex-m4", "simple-OOO"], help="Type of processor to use"
 )
 args = parser.parse_args()
 
@@ -43,7 +51,10 @@ system.exit_on_work_items = True
 
 # ==== setup the CPU ====
 # single core Cortex-M4 with FPU
-processor = CortexM4Processor(num_cores=1, if_fpu=True)
+if args.processor == "cortex-m4":
+    processor = CortexM4Processor(num_cores=1, if_fpu=True)
+else:
+    processor = SimpleProcessor(cpu_type=CPUTypes.O3, num_cores=1, isa=ISA.ARM)
 system.processor = processor
 # ==== end of CPU setup ====
 
@@ -55,7 +66,7 @@ sram1 = AddrRange(start=0x20000000, size="80KiB")
 # sram 2 has 16 KBytes
 sram2 = AddrRange(start=0x20014000, size="16KiB")
 # m5op region 1 MiBytes
-m5op_region = AddrRange(start=0xEE000000, size="1MiB")
+m5op_region = AddrRange(start=0x20020000, size="1MiB")
 # record memory ranges in system
 system.mem_ranges = [flash_memory, sram1, sram2]
 # ==== end of memory ranges setup ====
@@ -71,25 +82,25 @@ system.membus.default = system.membus.badaddr_responder.pio
 system.membus.max_routing_table_size = 2048
 
 # create Flash memory and connect it to the membus
-# TODO: the current CfiMemory model does not support timing
 system.flash_memory = SimpleMemory()
 system.flash_memory.range = flash_memory
 system.flash_memory.port = system.membus.mem_side_ports
+system.flash_memory.latency = "30ns"
+system.flash_memory.bandwidth = "130MiB/s"
 
 # create SRAM 1 memory and connect it to the membus
 system.sram1 = SimpleMemory()
 system.sram1.range = sram1
 system.sram1.port = system.membus.mem_side_ports
+system.sram1.latency = "10ns"
+system.sram1.bandwidth = "400MiB/s"
 
 # create SRAM 2 memory and connect it to the membus
 system.sram2 = SimpleMemory()
 system.sram2.range = sram2
 system.sram2.port = system.membus.mem_side_ports
-
-# create m5op memory and connect it to the membus
-# system.m5op_memory = SimpleMemory()
-# system.m5op_memory.range = m5op_region
-# system.m5op_memory.port = system.membus.mem_side_ports
+system.sram2.latency = "10ns"
+system.sram2.bandwidth = "400MiB/s"
 
 # this part bypasses the cache hierarchy and connects the cores directly to the
 # membus
@@ -132,23 +143,54 @@ root = Root(full_system=False, system=system)
 # instantiate the system
 m5.instantiate()
 # ==== end of simulation setup ====
-# the mapping here is caused by how gem5 handles the memory mapping in SE
-# mode. gem5 Arm created pages for Class-A and Class-R reserved regions but 
-# for Class-M, it does not have the same memory structure, so we need to map
-# some of them manually. TODO: investigate this deeper
-process.map(0x0,0x0,0x8000) # map the initial stack
-process.map(0xd000,0xd000,0x100000) # map the vector table
-process.map(0xbf000000,0xbf000000,0x100000) # map the reserved space
-# map flash, sram and m5op regions
-process.map(0x08000000, 0x08000000, flash_memory.size())
+
 process.map(sram1.start, sram1.start, sram1.size())
 process.map(sram2.start, sram2.start, sram2.size())
 process.map(m5op_region.start, m5op_region.start , m5op_region.size())
 
+print(f"Currently at {Path().absolute()}")
+
+runtimes = []
+begin_tick = 0
+event_track = 0
+
+# ==== define workbegin and workend reaction ====
+def workbegin_handler():
+    global begin_tick, event_track
+    print(f"workbegin {event_track} called")
+    # reset stats at workbegin
+    m5.stats.reset()
+    print("Reset stats")
+    begin_tick = m5.curTick()
+
+def workend_handler():
+    global begin_tick, runtimes, event_track
+    print(f"workend {event_track} called")
+    # dump stats at workend
+    m5.stats.dump()
+    print("Dumped stats")
+    end_tick = m5.curTick()
+    runtime = end_tick - begin_tick
+    runtimes.append(runtime)
+    print(f"Runtime for this region: {runtime} ticks, "
+                                            f"{runtime / 1000000000000:.6f} s")
+    event_track += 1
+# ==== end of workbegin and workend reaction ====
+
 # ==== start the simulation ====
 print("Beginning simulation!")
 exit_event = m5.simulate()
-print(f"Exiting @ tick {m5.curTick()} because {exit_event.getCause()}")
-# exit_event = m5.simulate()
-# print(f"Exiting @ tick {m5.curTick()} because {exit_event.getCause()}")
+cause = exit_event.getCause()
+while cause in ["workbegin", "workend"]:
+    if cause == "workbegin":
+        workbegin_handler()
+    elif cause == "workend":
+        workend_handler()
+    exit_event = m5.simulate()
+    cause = exit_event.getCause()
 # ==== end of simulation ====
+
+avg_tick = sum(runtimes) / len(runtimes) if len(runtimes) > 0 else 0
+print(f"Average runtime over {len(runtimes)} region(s): {avg_tick} ticks, "
+      f"{avg_tick / 1000000000000:.6f} s")
+

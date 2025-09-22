@@ -198,14 +198,14 @@ def Unsure() -> list[MinorFU]:
     SimdExt = FPMaker(["SimdExt"], 1, "SimdExt", 2, 0)
     SimdFloatExt = FPMaker(["SimdFloatExt"], 1, "SimdFloatExt", 2, 0)
     SimdConfig = FPMaker(["SimdConfig"], 1, "SimdConfig", 2, 0)
-    SimdBf16Cvt = FPMaker(["SimdBf16Cvt"], 1, "SimdBf16Cvt", 2, 0) 
-    SimdBf16DotProd = FPMaker(["SimdBf16DotProd"], 1, "SimdBf16DotProd", 2, 0)
-    SimdBf16MatMultAcc = FPMaker(
-        ["SimdBf16MatMultAcc"], 1, "SimdBf16MatMultAcc", 2, 0)
-    SimdBf16MultAcc = FPMaker(
-        ["SimdBf16MultAcc"], 1, "SimdBf16MultAcc", 2, 0)
-    Bf16Cvt = FPMaker(
-        ["Bf16Cvt"], 1, "Bf16Cvt", 2, 0)
+    #SimdBf16Cvt = FPMaker(["SimdBf16Cvt"], 1, "SimdBf16Cvt", 2, 0) 
+    #SimdBf16DotProd = FPMaker(["SimdBf16DotProd"], 1, "SimdBf16DotProd", 2, 0)
+    #SimdBf16MatMultAcc = FPMaker(
+    #    ["SimdBf16MatMultAcc"], 1, "SimdBf16MatMultAcc", 2, 0)
+    #SimdBf16MultAcc = FPMaker(
+    #    ["SimdBf16MultAcc"], 1, "SimdBf16MultAcc", 2, 0)
+    #Bf16Cvt = FPMaker(
+    #    ["Bf16Cvt"], 1, "Bf16Cvt", 2, 0)
     return [
         FloatAdd,
         FloatCmp,
@@ -268,11 +268,11 @@ def Unsure() -> list[MinorFU]:
         SimdExt,
         SimdFloatExt,
         SimdConfig,
-        SimdBf16Cvt,
-        SimdBf16DotProd,
-        SimdBf16MatMultAcc,
-        SimdBf16MultAcc,
-        Bf16Cvt
+       # SimdBf16Cvt,
+       # SimdBf16DotProd,
+       # SimdBf16MatMultAcc,
+       # SimdBf16MultAcc,
+       # Bf16Cvt
     ]
 
 class CortexM4Core(ArmMinorCPU):
