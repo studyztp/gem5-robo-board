@@ -10,6 +10,12 @@
   - contains simple tests for testing the demo board.
 
 # gem5 mini tutorial commands:
+commands to ssh and setup the server:
+```
+ssh [NetID]@brg-rhel8.ece.cornell.edu
+source setup-brg.sh 
+```
+commands for the tutorial experiment
 ```
 module load graphviz/13.1.2 gem5-stable-all/v25.0.0.1 arm-none-eabi/14.3.rel1 
 
