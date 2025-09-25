@@ -146,8 +146,6 @@ root = Root(full_system=False, system=system)
 m5.instantiate()
 # ==== end of simulation setup ====
 
-process.map(0xE0000000, 0xE0000000, 0x10000) # NVIC
-
 process.map(sram1.start, sram1.start, sram1.size())
 process.map(sram2.start, sram2.start, sram2.size())
 process.map(m5op_region.start, m5op_region.start , m5op_region.size())
