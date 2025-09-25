@@ -6,6 +6,7 @@ from cores.m4_core import CortexM4Processor
 import m5
 from m5.objects import (
     AddrRange,
+    ArmSemihosting,
     BadAddr,
     CfiMemory,
     Process,
@@ -48,6 +49,7 @@ system.clk_domain.voltage_domain = VoltageDomain()
 system.mem_mode = "timing"
 # simulation exits when "work_begin" or "work_end" m5ops are executed
 system.exit_on_work_items = True
+system.semihosting = ArmSemihosting()
 
 # ==== setup the CPU ====
 # single core Cortex-M4 with FPU
@@ -143,6 +145,8 @@ root = Root(full_system=False, system=system)
 # instantiate the system
 m5.instantiate()
 # ==== end of simulation setup ====
+
+process.map(0xE0000000, 0xE0000000, 0x10000) # NVIC
 
 process.map(sram1.start, sram1.start, sram1.size())
 process.map(sram2.start, sram2.start, sram2.size())

@@ -4,4 +4,4 @@
 [submodule "ento-bench"]
 	path = ento-bench
     url = https://github.com/studyztp/ento-bench.git
-    branch = fix-some-gem5-cmake
+    branch = semihosting-naive
