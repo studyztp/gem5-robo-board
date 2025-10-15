@@ -24,11 +24,11 @@ class ARTICache(ARTCache):
             writeback_clean=False,  # ART I-Cache is not write-back
             is_read_only=True,  # I-Cache is read-only
             addr_ranges=[flash_addr_range],
+            bypass_cache=False,
+            bypass_prefetch=False,
             tags=SectorTags(
                 num_blocks_per_sector=4 # 4 sectors per cache line
-            ),
-            bypass_cache=False,
-            bypass_prefetch=False
+            )
         )
 
 class ARTDCache(NoncoherentCache):
