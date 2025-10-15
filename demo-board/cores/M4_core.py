@@ -283,9 +283,15 @@ class CortexM4Core(ArmMinorCPU):
         # M4 does not support SMT
         self.threadPolicy = "SingleThreaded"
 
+        # The instruction line in STM32G4 is 8 bytes (64 bits)
+        self.fetch1LineSnapWidth = 8
+        self.fetch1LineWidth = 8
+
+        # Trying to merge the fetch1 and fetch2 stage into one stage
+        self.fetch1ToFetch2ForwardDelay = 1
         # Backward cycle delay from Fetch2 to Fetch1 for branch prediction
         # signalling (0 means in the same cycle, 1 mean the next cycle)
-        self.fetch1ToFetch2BackwardDelay = 0
+        self.fetch1ToFetch2BackwardDelay = 1
         # Size of input buffer to Fetch2 in cycles-worth of insts
         self.fetch2InputBufferSize = 1
         # Size of input buffer to Decode in cycles-worth of insts
@@ -293,6 +299,13 @@ class CortexM4Core(ArmMinorCPU):
         # Width (in instructions) of input to Decode (and implicitly Decode's
         # own width)
         self.decodeInputWidth = 1
+        # No super-scalar execution
+        self.executeInputWidth = 1
+        self.executeIssueLimit = 1
+        self.executeCommitLimit = 1
+        self.executeInputBufferSize = 1
+
+        # TODO: Need to loop back to branch predictor later
 
         self.executeFuncUnits = self._create_fu_pool()
 
