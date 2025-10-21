@@ -187,7 +187,7 @@ def workbegin_handler():
     # m5.debug.flags["Fetch"].enable()
     # m5.debug.flags["CachePort"].enable()
     # m5.debug.flags["ARTCache"].enable()
-    # m5.debug.flags["ExecAll"].enable()
+    m5.debug.flags["ExecAll"].enable()
 
 def workend_handler():
     global begin_tick, runtimes, event_track
@@ -205,7 +205,7 @@ def workend_handler():
     # m5.debug.flags["Fetch"].disable()
     # m5.debug.flags["CachePort"].disable()
     # m5.debug.flags["ARTCache"].disable()
-    # m5.debug.flags["ExecAll"].disable()
+    m5.debug.flags["ExecAll"].disable()
 # ==== end of workbegin and workend reaction ====
 
 # ==== start the simulation ====

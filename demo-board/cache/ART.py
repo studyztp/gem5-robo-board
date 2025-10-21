@@ -15,7 +15,7 @@ class ARTICache(ARTCache):
         super().__init__(
             size="1KiB",
             # num_sets = size / (block_size × num_blocks_per_sector × assoc)
-            assoc=8,
+            assoc=32,
             tag_latency=1,
             data_latency=1,
             response_latency=0,
@@ -25,9 +25,11 @@ class ARTICache(ARTCache):
             is_read_only=True,  # I-Cache is read-only
             addr_ranges=[flash_addr_range],
             bypass_cache=False,
-            bypass_prefetch=False,
+            bypass_prefetch=True,
+            cache_blk_size=8,
             tags=SectorTags(
-                num_blocks_per_sector=4 # 4 sectors per cache line
+                num_blocks_per_sector=4, # 4 sectors per cache line
+                block_size=8
             )
         )
 

@@ -1,6 +1,7 @@
 [submodule "gem5"]
 	path = gem5
 	url = git@github.com:studyztp/gem5.git
+	branch = studyztp/ART-cache
 [submodule "ento-bench"]
 	path = ento-bench
     url = git@github.com:studyztp/ento-bench.git
